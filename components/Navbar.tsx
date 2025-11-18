@@ -2,30 +2,34 @@
 
 import Link from "next/link";
 import { useAuth } from "../contexts/AuthContext";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-    const { isLoggedIn, logout, refresh } = useAuth();
+    const { isLoggedIn, logout } = useAuth();
+    const router = useRouter();
 
-    // 상태 변화 확인용 로그
-    useEffect(() => {
-        console.log("[Navbar] Mounted. Current login:", isLoggedIn);
-        refresh();
-    }, []);
-
-    console.log("[Navbar] Render. Current login:", isLoggedIn);
+    const handleLogout = () => {
+        logout();
+        router.push("/");
+    };
 
     return (
         <nav className="bg-gray-800 text-white p-4 flex justify-between">
-            <div className="text-lg font-bold">MyApp</div>
+            <div className="text-lg font-bold">
+                <Link href="/">MyApp</Link>
+            </div>
+
             <div className="space-x-4">
                 <Link href="/">Home</Link>
                 <Link href="/document">문서 분석</Link>
                 <Link href="/contact">Contact</Link>
 
+                {/* 🔥 게시판 메뉴 추가 */}
+                <Link href="/board/list">게시판</Link>
+
                 {isLoggedIn ? (
                     <button
-                        onClick={logout}
+                        onClick={handleLogout}
                         className="bg-red-600 px-3 py-1 rounded hover:bg-red-700"
                     >
                         Logout
