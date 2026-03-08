@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "../contexts/AuthContext";
+
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/features/auth/application/hooks/useAuth";
 
 export default function Navbar() {
-    const { isLoggedIn, logout } = useAuth();
+    const { state, logout } = useAuth();
     const router = useRouter();
+    const isLoggedIn = state.status === "AUTHENTICATED"
 
     const handleLogout = () => {
         logout();
